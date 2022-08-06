@@ -4,32 +4,26 @@
       <h2>Login</h2>
       <div class="input__group">
         <label>User</label>
-        <vue-input v-model="user" @actionBtn="actionLogin"/>
+        <vue-input v-model="user" @actionBtn="actionLogin" />
       </div>
       <div class="input__group">
         <label>Password</label>
-        <vue-input-password v-model="password" @actionBtn="actionLogin"/>
+        <vue-input-password v-model="password" @actionBtn="actionLogin" />
       </div>
-      <div class="input__group" v-if="typeLogin">
-        <label>Password</label>
-        <vue-input-password v-model="secondPassword" @actionBtn="actionLogin"/>
-      </div>
-      <div class="input__group" v-if="typeLogin">
-        <label>Email</label>
-        <vue-input v-model="email" @actionBtn="actionLogin"/>
-      </div>
-      <div v-if="msgNoUser" class="msgAccount">
-        <span>Unregistered user</span>
-      </div>
-      <div v-if="msgNoPassword" class="msgAccount">
-        <span>Incorrect password</span>
+      <div v-if="error" class="msgAccount">
+        <span>{{ msgError }}</span>
       </div>
     </div>
     <div class="form__actions">
-      <vue-btn :text="typeLogin ? 'Create account' : 'Sign in'" @actionBtn="actionLogin" />
+      <vue-btn
+        :text="typeLogin ? 'Create account' : 'Sign in'"
+        @actionBtn="actionLogin"
+      />
       <vue-btn @actionBtn="changeTypeLogin">
         <template v-slot:icon>
-          <span v-if="typeLogin">Already have an account? <strong>Sign in</strong></span>
+          <span v-if="typeLogin"
+            >Already have an account? <strong>Sign in</strong></span
+          >
           <span v-else>I do not have an account <strong>Sign up</strong></span>
         </template>
       </vue-btn>
@@ -41,66 +35,90 @@
 import vueBtn from '@/components/custom/vueBtn.vue'
 import vueInput from '@/components/custom/vueInputText.vue'
 import vueInputPassword from '@/components/custom/vueInputPassword.vue'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'vue-todo',
   components: {
     vueBtn,
     vueInput,
-    vueInputPassword
-},
+    vueInputPassword,
+  },
   data() {
     return {
       user: null,
       password: null,
-      secondPassword: null,
-      email: null,
-      msgNoUser: false,
-      msgNoPassword: false,
-      typeLogin: true // true is sign up and false is sign up
+      msgError: '',
+      error: false,
+      typeLogin: true, // true is sign up and false is sign up
     }
   },
   methods: {
     actionLogin() {
-      this.typeLogin
-        ? this.signUp()
-        : this.signIn()
+      this.typeLogin ? this.signUp() : this.signIn()
     },
     signIn() {
       this.$store.dispatch('findUser', this.user)
       const currentAccount = this.$store.state.accountAccessAttempt
-      if(currentAccount){
-        this.msgNoUser = false
-        const password = this.$CryptoJS.AES.decrypt(currentAccount.password, "12345").toString(this.CryptoJS.enc.Utf8)
-        if(password === this.password){
-          this.msgNoPassword = false
-          setTimeout(this.$router.push({ name: "Home" }), 500)
-        }else {
-          this.msgNoPassword = true
+      if (currentAccount) {
+        this.error = false
+        this.msgError = 'Unregistered user'
+        const password = this.$CryptoJS.AES.decrypt(
+          currentAccount.password,
+          '12345'
+        ).toString(this.CryptoJS.enc.Utf8)
+        if (password === this.password) {
+          this.error = false
+          this.msgError = 'Incorrect password'
+          setTimeout(this.$router.push({ name: 'Home' }), 500)
+        } else {
+          this.error = true
         }
       } else {
-        this.msgNoUser = true
+        this.error = true
       }
     },
     signUp() {
-      let encryptedPassword = this.$CryptoJS.AES.encrypt(this.password, "12345").toString()
-      let account = {
-        user: this.user,
-        password: encryptedPassword,
-        email: this.email,
-        id: uuidv4()
+      if (this.user && this.password) {
+        if (this.user.length >= 5 && this.password.length >= 5) {
+          console.log(this.checkIfIUserExists())
+          if (this.checkIfIUserExists()) {
+            this.error = false
+            let encryptedPassword = this.$CryptoJS.AES.encrypt(
+              this.password.trim(),
+              '12345'
+            ).toString()
+            let account = {
+              user: this.user.trim(),
+              password: encryptedPassword,
+              id: uuidv4(),
+            }
+            this.$store.dispatch('addNewAccount', account)
+            setTimeout(this.$router.push({ name: 'Home' }), 500)
+          } else {
+            console.log("hola")
+            this.error = true
+            this.msgError = 'User already exists'
+          }
+        } else {
+          this.error = true
+          this.msgError = 'Incomplete fields required, minimum 5 characters'
+        }        
+      } else {
+        this.error = true
+        this.msgError = "Incomplete fields required"
       }
-      this.$store.dispatch('addNewAccount', account)
     },
     changeTypeLogin() {
-      this.typeLogin =! this.typeLogin
+      this.typeLogin = !this.typeLogin
       this.user = null
       this.password = null
-      this.secondPassword = null
-      this.email = null
       this.msgNoUser = false
-    }
+      this.msgCreateAccount = false
+    },
+    checkIfIUserExists() {
+      return !this.$store.state.accounts.some((i) => i.user === this.user)
+    },
   },
 }
 </script>
@@ -110,7 +128,7 @@ export default {
   margin-top: 20px;
   width: 100%;
   height: 100%;
-  min-height: 300px;
+  min-height: 250px;
   background-color: var(--bg-secondary);
   box-sizing: border-box;
   padding: 20px;
@@ -120,9 +138,9 @@ export default {
 }
 .form__content {
   display: grid;
-  grid-template-rows: 40px repeat(4, 30px);
+  grid-template-rows: 40px repeat(3, 30px);
   gap: 10px;
-  height: 200px;
+  height: 170px;
 }
 .form__content h2 {
   text-align: center;
@@ -167,10 +185,11 @@ export default {
 }
 @media screen and (min-width: 870px) {
   .form {
+    margin-top: 0px;
     width: 60vw;
-    min-width: 300px;
+    min-width: 250px;
     max-width: 400px;
-    height: 360px;
+    height: 330px;
     grid-template-rows: 1fr 80px;
     padding: 30px;
     border-radius: 4px;

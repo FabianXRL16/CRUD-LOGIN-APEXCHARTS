@@ -113,7 +113,6 @@ export default new Vuex.Store({
       {
         user: 'fxrl16',
         password: 'U2FsdGVkX19mzkaMlkBRIpQuv6gFAsTIyZTkxirk/d8=',
-        email: 'fxrl16@gmail',
         id: '6047dcef-8398-4f1f-8ff1-6050c9d0b822',
       },
     ],
@@ -181,9 +180,7 @@ export default new Vuex.Store({
       state.users.splice(pos, 1, Object.assign(data, dni))
     },
     ADD_ACCOUNT(state, account) {
-      if (!state.accounts.some((i) => i.user === account.user)){
-        state.accounts.push(account)
-      }
+      state.accounts.push(account)
     },
     FIND_USER(state, user) {
       state.accountAccessAttempt = state.accounts.find(
