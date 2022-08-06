@@ -3,8 +3,8 @@
     <div class="form__content">
       <h2>Login</h2>
       <div class="input__group">
-        <label>Name</label>
-        <vue-input v-model="nameUser" />
+        <label>User</label>
+        <vue-input v-model="user" />
       </div>
       <div class="input__group">
         <label>Password</label>
@@ -17,6 +17,12 @@
       <div class="input__group" v-if="typeLogin">
         <label>Email</label>
         <vue-input v-model="email" />
+      </div>
+      <div v-if="msgNoUser" class="msgAccount">
+        <span>Unregistered user</span>
+      </div>
+      <div v-if="msgNoPassword" class="msgAccount">
+        <span>Incorrect password</span>
       </div>
     </div>
     <div class="form__actions">
@@ -45,10 +51,12 @@ export default {
 },
   data() {
     return {
-      nameUser: null,
+      user: null,
       password: null,
       secondPassword: null,
       email: null,
+      msgNoUser: false,
+      msgNoPassword: false,
       typeLogin: true // true is sign up and false is sign up
     }
   },
@@ -59,12 +67,26 @@ export default {
         : this.signIn()
     },
     signIn() {
-      console.log(this.nameUser + this.password)
+      this.$store.dispatch('findUser', this.user)
+      const currentAccount = this.$store.state.accountAccessAttempt
+      if(currentAccount){
+        this.msgNoUser = false
+        const password = this.$CryptoJS.AES.decrypt(currentAccount.password, "12345").toString(this.CryptoJS.enc.Utf8)
+        if(password === this.password){
+          this.msgNoPassword = false
+          setTimeout(this.$router.push({ name: "Home" }), 500)
+        }else {
+          this.msgNoPassword = true
+        }
+      } else {
+        this.msgNoUser = true
+      }
     },
     signUp() {
+      let encryptedPassword = this.$CryptoJS.AES.encrypt(this.password, "12345").toString()
       let account = {
-        user: this.nameUser,
-        password: this.password,
+        user: this.user,
+        password: encryptedPassword,
         email: this.email,
         id: uuidv4()
       }
@@ -72,10 +94,11 @@ export default {
     },
     changeTypeLogin() {
       this.typeLogin =! this.typeLogin
-      this.nameUser = null
+      this.user = null
       this.password = null
       this.secondPassword = null
       this.email = null
+      this.msgNoUser = false
     }
   },
 }
@@ -135,6 +158,11 @@ export default {
 }
 .form__actions button:nth-child(2) strong {
   color: var(--bg-purple);
+}
+.msgAccount {
+  color: #f66363;
+  text-align: right;
+  font-size: 12px;
 }
 @media screen and (min-width: 870px) {
   .form {
