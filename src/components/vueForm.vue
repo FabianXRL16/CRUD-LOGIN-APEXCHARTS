@@ -4,19 +4,19 @@
       <h2>Login</h2>
       <div class="input__group">
         <label>User</label>
-        <vue-input v-model="user" />
+        <vue-input v-model="user" @actionBtn="actionLogin"/>
       </div>
       <div class="input__group">
         <label>Password</label>
-        <vue-input v-model="password" />
+        <vue-input-password v-model="password" @actionBtn="actionLogin"/>
       </div>
       <div class="input__group" v-if="typeLogin">
         <label>Password</label>
-        <vue-input v-model="secondPassword" />
+        <vue-input-password v-model="secondPassword" @actionBtn="actionLogin"/>
       </div>
       <div class="input__group" v-if="typeLogin">
         <label>Email</label>
-        <vue-input v-model="email" />
+        <vue-input v-model="email" @actionBtn="actionLogin"/>
       </div>
       <div v-if="msgNoUser" class="msgAccount">
         <span>Unregistered user</span>
@@ -33,7 +33,6 @@
           <span v-else>I do not have an account <strong>Sign up</strong></span>
         </template>
       </vue-btn>
-      <!-- <vue-btn :text="'Sign up'" /> -->
     </div>
   </div>
 </template>
@@ -41,13 +40,15 @@
 <script>
 import vueBtn from '@/components/custom/vueBtn.vue'
 import vueInput from '@/components/custom/vueInputText.vue'
+import vueInputPassword from '@/components/custom/vueInputPassword.vue'
 import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: 'vue-todo',
   components: {
     vueBtn,
-    vueInput
+    vueInput,
+    vueInputPassword
 },
   data() {
     return {
@@ -171,6 +172,7 @@ export default {
     max-width: 400px;
     height: 360px;
     grid-template-rows: 1fr 80px;
+    padding: 30px;
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
       rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,

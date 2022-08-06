@@ -181,7 +181,9 @@ export default new Vuex.Store({
       state.users.splice(pos, 1, Object.assign(data, dni))
     },
     ADD_ACCOUNT(state, account) {
-      state.accounts.push(account)
+      if (!state.accounts.some((i) => i.user === account.user)){
+        state.accounts.push(account)
+      }
     },
     FIND_USER(state, user) {
       state.accountAccessAttempt = state.accounts.find(
