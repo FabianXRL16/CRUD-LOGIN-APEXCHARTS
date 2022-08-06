@@ -1,11 +1,22 @@
 <template>
   <nav>
-    <input type="text" placeholder="Search user by DNI ..." />
+    <input v-model="valueInput" type="text" placeholder="Search user by DNI ..." />
   </nav>
 </template>
 <script>
 export default {
   name: 'vue-input-text',
+   data() {
+    return {
+      valueInput: "",
+    }
+  },
+  watch: {
+    valueInput(dni) {
+      this.$store.dispatch("userToSearch", dni);
+      // console.log(dni)
+    },
+  },
 }
 </script>
 <style scoped>

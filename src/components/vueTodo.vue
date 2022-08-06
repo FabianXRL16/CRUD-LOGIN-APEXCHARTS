@@ -3,7 +3,7 @@
     <vue-header />
     <vue-snippet />
     <vue-header-list />
-    <vue-list />
+    <vue-list :users="users" />
     <vue-btn class="btnAddItem" @actionBtn="openModal" >
         <template v-slot:icon>
           <font-awesome-icon class="icon" icon="plus" />
@@ -30,13 +30,21 @@ export default {
     vueBtn,
     vueModal
   },
+  data() {
+    return {
+      users: [],
+    };
+  },
+  created() {
+    this.users = this.$store.state.users;
+  },
   methods: {
     openModal() {
       let modal = this.$refs.modal.$refs.modalContainer
       modal.style.transform = "scale(1)";
       modal.style.transition = ".5s";
     }
-  }
+  },
 };
 </script>
 

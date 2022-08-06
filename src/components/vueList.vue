@@ -1,6 +1,6 @@
 <template>
   <ul class="list">
-    <vue-item v-for="user in $store.state.users" :key="user.dni" :user="user" />
+    <vue-item v-for="user in filteredUsers" :key="user.dni" :user="user" />
   </ul>
 </template>
 <script>
@@ -9,7 +9,20 @@ export default {
   name: 'vue-list',
   components: {
     vueItem
-  }
+  },
+  props: {
+    users: {
+        type: Array,
+        default: () => []
+    }
+  },
+  computed: {
+    filteredUsers() {
+        let filter = this.$store.state.userToSearch
+        if(!filter) return this.users
+        return this.users.filter(i => i.dni.includes(filter))
+    }
+  },
 }
 </script>
 
