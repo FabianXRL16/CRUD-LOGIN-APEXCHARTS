@@ -4,48 +4,50 @@
     <vue-snippet />
     <vue-header-list />
     <vue-list :users="users" />
-    <vue-btn class="btnAddItem" @actionBtn="openModal" >
-        <template v-slot:icon>
-          <font-awesome-icon class="icon" icon="plus" />
-        </template>
-      </vue-btn>
-    <vue-modal ref="modal" />
+    <vue-btn class="btnAddItem" @actionBtn="openModal">
+      <template v-slot:icon>
+        <font-awesome-icon class="icon" icon="plus" />
+      </template>
+    </vue-btn>
+    <vue-modal v-if="$store.state.showModal" ref="modal" />
   </div>
 </template>
 
 <script>
-import vueList from "@/components/vueList.vue";
-import vueHeaderList from "@/components/vueHeaderList.vue";
-import vueHeader from "@/components/vueHeader.vue";
-import vueSnippet from "@/components/vueSnippet.vue";
-import vueModal from "@/components/vueModal.vue";
-import vueBtn from "@/components/custom/vueBtn.vue";
+import vueList from '@/components/vueList.vue'
+import vueHeaderList from '@/components/vueHeaderList.vue'
+import vueHeader from '@/components/vueHeader.vue'
+import vueSnippet from '@/components/vueSnippet.vue'
+import vueModal from '@/components/vueModal.vue'
+import vueBtn from '@/components/custom/vueBtn.vue'
 export default {
-  name: "vue-todo",
+  name: 'vue-todo',
   components: {
     vueList,
     vueHeaderList,
     vueHeader,
     vueSnippet,
     vueBtn,
-    vueModal
+    vueModal,
   },
   data() {
     return {
       users: [],
-    };
+    }
   },
   created() {
-    this.users = this.$store.state.users;
+    this.users = this.$store.state.users
   },
   methods: {
     openModal() {
-      let modal = this.$refs.modal.$refs.modalContainer
-      modal.style.transform = "scale(1)";
-      modal.style.transition = ".5s";
-    }
+      this.$store.dispatch('updateType', true)
+      this.$store.dispatch('showModal', true)
+        // let modal = this.$refs.modal.$refs.modalContainer
+        // modal.style.transform = 'scale(1)'
+        // modal.style.transition = '.5s'
+    },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -68,7 +70,7 @@ export default {
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
-@media screen and (min-width: 870px){
+@media screen and (min-width: 870px) {
   .container {
     margin-top: -60px;
     width: 550px;

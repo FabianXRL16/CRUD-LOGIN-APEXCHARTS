@@ -27,7 +27,7 @@ body {
 h2, p {
   margin: 0px;
 }
-input, button {
+input, button, select {
   outline: none;
   border: none;
 }

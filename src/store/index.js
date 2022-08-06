@@ -22,16 +22,38 @@ export default new Vuex.Store({
       { dni: '03861230', birthDate: new Date(), gender: true, age: 23, state: false },
     ],
     userToSearch: null,
+    showModal: false,
+    usersUpdateType: true // true is add and false is edit
   },
   actions: {
     userToSearch: ({ commit }, dni) => {
       commit("USER_TO_SEARCH", dni);
+    },
+    showModal: ({ commit }, stateModal) => {
+      commit("CHANGE_STATE_MODAL", stateModal)
+    },
+    addUser: ({ commit }, data) => {
+      commit("ADD_USER", data)
+    },
+    updateType: ({ commit }, stateType) => {
+      commit("UPDATE_TYPE", stateType)
     },
   },
   mutations: {
     USER_TO_SEARCH(state, dni) {
       state.userToSearch = dni;
     },
+    CHANGE_STATE_MODAL(state, stateModal) {
+      state.showModal = stateModal;
+    },
+    ADD_USER(state, data) {
+      if (!state.users.some((i) => i.dni === data.dni)) {
+        state.users.unshift(data);
+      }
+    },
+    UPDATE_TYPE(state, type) {
+      state.usersUpdateType = type
+    }
   },
   modules: {
   }

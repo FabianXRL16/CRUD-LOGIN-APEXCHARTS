@@ -1,32 +1,37 @@
 <template>
   <div class="modal" ref="modalContainer">
-    <div class="form"> <!-- corregir tag a form -->
+    <div class="form">
+      <!-- corregir tag a form -->
       <div class="form__content">
         <h2>New Task</h2>
         <div class="input__group">
           <label>DNI</label>
-          <vue-input :placeholder="'New task'" />
+          <vue-input v-model="dni" />
         </div>
         <div class="input__group">
           <label>Birth</label>
-          <vue-input :placeholder="'New task'" />
+          <vue-date-picker v-model="dateBirth" />
         </div>
         <div class="input__group">
           <label>Age</label>
-          <vue-input :placeholder="'New task'" />
+          <vue-input v-model="age" />
         </div>
         <div class="input__group">
           <label>Gender</label>
-          <vue-input :placeholder="'New task'" />
+          <vue-select :options="options" @actionSelect="getValueSelect" />
         </div>
         <div class="input__group">
           <label>State</label>
-          <vue-input :placeholder="'New task'" />
+          <vue-radio-button @actionRadio="getValueRadio" />
         </div>
       </div>
       <div class="actions">
-        <vue-btn :text="'Add'" type="submit" @actionBtn="addTask" />
-        <vue-btn :text="'x'" type="submit" @actionBtn="closeModal" />
+        <vue-btn :text="'Add'" type="submit" @actionBtn="addUser" />
+        <vue-btn class="btnAddItem" @actionBtn="closeModal">
+          <template v-slot:icon>
+            <font-awesome-icon class="icon" icon="xmark" />
+          </template>
+        </vue-btn>
       </div>
     </div>
   </div>
@@ -34,22 +39,57 @@
 <script>
 import vueBtn from '@/components/custom/vueBtn.vue'
 import vueInput from '@/components/custom/vueInputText.vue'
+import vueDatePicker from '@/components/custom/vueDatePicker.vue'
+import vueSelect from '@/components/custom/vueSelect.vue'
+import vueRadioButton from '@/components/custom/vueRadioButton.vue'
+import VueRadioButton from './custom/vueRadioButton.vue'
 export default {
-  name: "vue-modal",
+  name: 'vue-modal',
   components: {
     vueBtn,
-    vueInput
+    vueInput,
+    vueDatePicker,
+    vueSelect,
+    vueRadioButton,
+    VueRadioButton,
+  },
+  data() {
+    return {
+      options: ['Male', 'Female'],
+      dni: null,
+      dateBirth: null,
+      age: '',
+      gender: true,
+      state: true,
+    }
   },
   methods: {
-    addTask() {
-      console.log('add')
+    addUser() {
+      let data = {
+        dni: this.dni,
+        dateBirth: this.dateBirth,
+        age: this.age,
+        gender: this.gender,
+        state: this.state
+      }
+      if (this.$store.state.usersUpdateType) {
+        this.$store.dispatch('addUser', data)
+        this.$store.dispatch('showModal', false)
+      }
     },
     closeModal() {
-      this.$refs.modalContainer.style.transform = "scale(0)";
-      this.$refs.modalContainer.style.transition = ".5s";
-    }
-  }
-};
+      this.$store.dispatch('showModal', false)
+      // this.$refs.modalContainer.style.transform = 'scale(0)'
+      // this.$refs.modalContainer.style.transition = '.5s'
+    },
+    getValueSelect(newValue) {
+      this.gender = newValue === 'Male'
+    },
+    getValueRadio(newValue) {
+      this.state = newValue === 'Active'
+    },
+  },
+}
 </script>
 <style scoped>
 .modal {
@@ -62,11 +102,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(0);
-  transition: .3s;
+  /* transform: scale(0);
+  transition: 0.3s; */
 }
 
-.form { /* corregir a form */
+.form {
+  /* corregir a form */
   width: 60vw;
   min-width: 300px;
   max-width: 400px;
@@ -92,6 +133,11 @@ export default {
   display: grid;
   grid-template-columns: 60px 1fr;
   align-items: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
 }
 
 .actions button {

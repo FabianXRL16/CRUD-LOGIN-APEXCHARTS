@@ -1,11 +1,10 @@
 <template>
   <li class="item">
     <div class="item__content">
-      <!-- <p class="item__task">Vue.js es un framewrok extraordinario y facil de aprender</p> -->
       <span class="item__content_col"> {{ user.dni }} </span>
       <span class="item__content_col"> {{ formatDate(user.birthDate) }} </span>
       <span class="item__content_col">
-        <font-awesome-icon class="icon" :class="user.state ? 'female' : 'male'" :icon="user.gender ? 'venus' : 'mars'" />
+        <font-awesome-icon class="icon" :class="user.gender ? 'female' : 'male'" :icon="user.gender ? 'venus' : 'mars'" />
       </span>
       <span class="item__content_col"> {{ user.age }} </span>
       <span class="item__content_col">
