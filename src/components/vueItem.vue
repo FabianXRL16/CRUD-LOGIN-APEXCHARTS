@@ -2,25 +2,23 @@
   <li class="item">
     <div class="item__content">
       <!-- <p class="item__task">Vue.js es un framewrok extraordinario y facil de aprender</p> -->
-      <span class="item__content_col">
-        73860228
-      </span>
-      <span class="item__content_col">
-        13/12/1998
-      </span>
-      <span class="item__content_col">
-        Female
-      </span>
-      <span class="item__content_col">
-        23
-      </span>
-      <span class="item__content_col">
-        True
-      </span>
+      <span class="item__content_col"> 73860228 </span>
+      <span class="item__content_col"> 13/12/1998 </span>
+      <span class="item__content_col"> Female </span>
+      <span class="item__content_col"> 23 </span>
+      <span class="item__content_col"> True </span>
     </div>
     <div class="item__actions">
-      <vue-btn :text="'a'" />
-      <vue-btn :text="'x'" />
+      <vue-btn>
+        <template v-slot:icon>
+          <font-awesome-icon class="icon" icon="user-pen" />
+        </template>
+      </vue-btn>
+      <vue-btn>
+        <template v-slot:icon>
+          <font-awesome-icon class="icon" icon="xmark" />
+        </template>
+      </vue-btn>
     </div>
   </li>
 </template>
@@ -29,8 +27,8 @@ import vueBtn from '@/components/custom/vueBtn.vue'
 export default {
   name: 'vue-item',
   components: {
-    vueBtn
-  }
+    vueBtn,
+  },
 }
 </script>
 <style scoped>
@@ -50,23 +48,20 @@ export default {
   justify-content: center;
 }
 .item__content_col {
- font-size: 10px;
- line-height: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
+  font-size: 10px;
+  line-height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-/* .item__task {
-  width: calc(80vw - 100px);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-weight: 300;
-} */
-.item__actions button:nth-child(1){
+.item__actions {
+  display: flex;
+  justify-content: space-between;
+}
+.item__actions button:nth-child(1) {
   background-color: var(--bg-purple);
 }
-@media screen and (min-width: 870px){
+@media screen and (min-width: 870px) {
   .item__content {
     grid-template-columns: repeat(3, 1fr) 60px 60px;
   }

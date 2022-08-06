@@ -1,6 +1,5 @@
 <template>
-  <button
-    @click="search">
+  <button @click="search">
     <slot name="icon" />
     {{ text }}
   </button>
@@ -10,13 +9,13 @@ export default {
   name: 'vue-btn',
   props: {
     text: {
-        type: String,
-        default: ""
-    }
+      type: String,
+      default: '',
+    },
   },
   methods: {
     search() {
-      this.$emit("actionBtn");
+      this.$emit('actionBtn')
     },
   },
 }

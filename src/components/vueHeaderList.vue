@@ -1,29 +1,32 @@
 <template>
   <div class="headerList">
     <span class="headerList__text">
-      DNI
+      <strong>DNI</strong>
+      <font-awesome-icon class="icon" icon="address-card" />
     </span>
     <span class="headerList__text">
-      Date Birth
+      <strong>Date Birth</strong>
+      <font-awesome-icon class="icon" icon="cake-candles" />
     </span>
     <span class="headerList__text">
-      Gender
+      <strong>Gender</strong>
+      <font-awesome-icon class="icon" icon="mars-and-venus" />
     </span>
     <span class="headerList__text">
-      Age
+      <strong>Age</strong>
+      <font-awesome-icon class="icon" icon="calendar" />
     </span>
     <span class="headerList__text">
-      State
+      <strong>State</strong>
+      <font-awesome-icon class="icon" icon="flag" />
     </span>
-    <span class="headerList__text">
-      Actions
-    </span>
+    <span class="headerList__text"> Actions </span>
   </div>
 </template>
 <script>
 export default {
   name: 'vue-header-list',
-  components: {}
+  components: {},
 }
 </script>
 <style scoped>
@@ -36,7 +39,7 @@ export default {
   padding: 10px 15px 10px 0px;
   border-radius: 5px;
   margin-bottom: 10px;
-  opacity: .7;
+  opacity: 0.7;
 }
 .headerList__text {
   font-size: 12px;
@@ -45,13 +48,25 @@ export default {
   justify-content: center;
   align-items: center;
 }
-@media screen and (min-width: 870px){
+.headerList__text .icon {
+  display: flex;
+}
+.headerList__text strong {
+  display: none;
+}
+@media screen and (min-width: 870px) {
   .headerList {
     grid-template-columns: repeat(3, 1fr) repeat(2, 60px) 70px;
   }
   .headerList__text {
     font-size: 14px;
     line-height: 14px;
+  }
+  .headerList__text .icon {
+    display: none;
+  }
+  .headerList__text strong {
+    display: flex;
   }
 }
 </style>
