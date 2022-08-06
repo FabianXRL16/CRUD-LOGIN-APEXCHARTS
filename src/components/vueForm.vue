@@ -35,6 +35,8 @@
 <script>
 import vueBtn from '@/components/custom/vueBtn.vue'
 import vueInput from '@/components/custom/vueInputText.vue'
+import { v4 as uuidv4 } from 'uuid';
+
 export default {
   name: 'vue-todo',
   components: {
@@ -60,7 +62,13 @@ export default {
       console.log(this.nameUser + this.password)
     },
     signUp() {
-      console.log(this.nameUser + this.email)
+      let account = {
+        user: this.nameUser,
+        password: this.password,
+        email: this.email,
+        id: uuidv4()
+      }
+      this.$store.dispatch('addNewAccount', account)
     },
     changeTypeLogin() {
       this.typeLogin =! this.typeLogin
@@ -78,7 +86,7 @@ export default {
   margin-top: 20px;
   width: 100%;
   height: 100%;
-  min-height: 450px;
+  min-height: 300px;
   background-color: var(--bg-secondary);
   box-sizing: border-box;
   padding: 20px;

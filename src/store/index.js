@@ -24,7 +24,8 @@ export default new Vuex.Store({
     userToSearch: null,
     showModal: false,
     usersUpdateType: true, // true is add and false is edit
-    currentUserDni: null
+    currentUserDni: null,
+    accounts: []
   },
   actions: {
     userToSearch: ({ commit }, dni) => {
@@ -47,7 +48,13 @@ export default new Vuex.Store({
     },
     editUser: ({ commit }, data) => {
       commit("EDIT_USER", data)
-    }
+    },
+    addNewAccount: ({ commit }, account) => {
+      commit("ADD_ACCOUNT", account)
+    },
+    // signInAccount: ({ commit }, account) => {
+    //   commit("SIGN_IN_ACCOUNT", account)
+    // }
   },
   mutations: {
     USER_TO_SEARCH(state, dni) {
@@ -77,7 +84,13 @@ export default new Vuex.Store({
         dni: state.users[pos].dni
       }
       state.users.splice(pos, 1, Object.assign(data, dni))
-    }
+    },
+    ADD_ACCOUNT(state, account) {
+      state.accounts.push(account)
+    },
+    // SIGN_IN_ACCOUNT(state, account) {
+
+    // }
   },
   modules: {
   }
