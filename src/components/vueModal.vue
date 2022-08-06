@@ -42,7 +42,6 @@ import vueInput from '@/components/custom/vueInputText.vue'
 import vueDatePicker from '@/components/custom/vueDatePicker.vue'
 import vueSelect from '@/components/custom/vueSelect.vue'
 import vueRadioButton from '@/components/custom/vueRadioButton.vue'
-import VueRadioButton from './custom/vueRadioButton.vue'
 export default {
   name: 'vue-modal',
   components: {
@@ -51,7 +50,6 @@ export default {
     vueDatePicker,
     vueSelect,
     vueRadioButton,
-    VueRadioButton,
   },
   data() {
     return {
