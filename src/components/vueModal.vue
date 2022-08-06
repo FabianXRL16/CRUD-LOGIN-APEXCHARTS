@@ -4,7 +4,7 @@
       <!-- corregir tag a form -->
       <div class="form__content">
         <h2>New Task</h2>
-        <div class="input__group">
+        <div class="input__group" v-if="$store.state.usersUpdateType">
           <label>DNI</label>
           <vue-input v-model="dni" />
         </div>
@@ -65,6 +65,16 @@ export default {
   },
   methods: {
     addUser() {
+      this.$store.state.usersUpdateType
+        ? this.newUser()
+        : this.editUser()
+    },
+    closeModal() {
+      this.$store.dispatch('showModal', false)
+      // this.$refs.modalContainer.style.transform = 'scale(0)'
+      // this.$refs.modalContainer.style.transition = '.5s'
+    },
+    newUser() {
       let data = {
         dni: this.dni,
         dateBirth: this.dateBirth,
@@ -72,15 +82,18 @@ export default {
         gender: this.gender,
         state: this.state
       }
-      if (this.$store.state.usersUpdateType) {
-        this.$store.dispatch('addUser', data)
-        this.$store.dispatch('showModal', false)
-      }
-    },
-    closeModal() {
+      this.$store.dispatch('addUser', data)
       this.$store.dispatch('showModal', false)
-      // this.$refs.modalContainer.style.transform = 'scale(0)'
-      // this.$refs.modalContainer.style.transition = '.5s'
+    },
+    editUser() {
+      let data = {
+        dateBirth: this.dateBirth,
+        age: this.age,
+        gender: this.gender,
+        state: this.state
+      }
+      this.$store.dispatch('editUser', data)
+      this.$store.dispatch('showModal', false)
     },
     getValueSelect(newValue) {
       this.gender = newValue === 'Male'

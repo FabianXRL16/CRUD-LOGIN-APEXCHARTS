@@ -12,7 +12,7 @@
       </span>
     </div>
     <div class="item__actions">
-      <vue-btn>
+      <vue-btn @actionBtn="openModal(user.dni)">
         <template v-slot:icon>
           <font-awesome-icon class="icon" icon="user-pen" />
         </template>
@@ -46,6 +46,11 @@ export default {
         day: '2-digit',
       })
     },
+    openModal(dni) {
+      this.$store.dispatch('updateType', false)
+      this.$store.dispatch('getDniUser', dni)
+      this.$store.dispatch('showModal', true)
+    }
   }
 }
 </script>

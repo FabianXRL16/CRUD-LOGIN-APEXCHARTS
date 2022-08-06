@@ -23,7 +23,8 @@ export default new Vuex.Store({
     ],
     userToSearch: null,
     showModal: false,
-    usersUpdateType: true // true is add and false is edit
+    usersUpdateType: true, // true is add and false is edit
+    currentUserDni: null
   },
   actions: {
     userToSearch: ({ commit }, dni) => {
@@ -40,6 +41,12 @@ export default new Vuex.Store({
     },
     deleteUser: ({ commit }, dni) => {
       commit("DELETE_USER", dni)
+    },
+    getDniUser: ({ commit }, dni) => {
+      commit("GET_DNI_USER", dni)
+    },
+    editUser: ({ commit }, data) => {
+      commit("EDIT_USER", data)
     }
   },
   mutations: {
@@ -60,6 +67,16 @@ export default new Vuex.Store({
     DELETE_USER(state, dni) {
       let pos = state.users.findIndex(i => i.dni === dni)
       state.users.splice(pos,1)
+    },
+    GET_DNI_USER(state, dni) {
+      state.currentUserDni = dni
+    },
+    EDIT_USER(state, data) {
+      let pos = state.users.findIndex(i => i.dni === state.currentUserDni)
+      let dni = {
+        dni: state.users[pos].dni
+      }
+      state.users.splice(pos, 1, Object.assign(data, dni))
     }
   },
   modules: {
