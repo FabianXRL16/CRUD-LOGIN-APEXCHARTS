@@ -4,7 +4,11 @@
     <vue-snippet />
     <vue-header-list />
     <vue-list />
-    <vue-btn class="btnAddItem" :text="'+'" @actionBtn="openModal" />
+    <vue-btn class="btnAddItem" @actionBtn="openModal" >
+        <template v-slot:icon>
+          <font-awesome-icon class="icon" icon="plus" />
+        </template>
+      </vue-btn>
     <vue-modal ref="modal" />
   </div>
 </template>

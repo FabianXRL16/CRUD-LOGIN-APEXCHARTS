@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <input type="text" placeholder="Search for a task ..." />
+    <input type="text" placeholder="Search user by DNI ..." />
   </nav>
 </template>
 <script>

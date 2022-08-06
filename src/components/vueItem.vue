@@ -2,11 +2,15 @@
   <li class="item">
     <div class="item__content">
       <!-- <p class="item__task">Vue.js es un framewrok extraordinario y facil de aprender</p> -->
-      <span class="item__content_col"> 73860228 </span>
-      <span class="item__content_col"> 13/12/1998 </span>
-      <span class="item__content_col"> Female </span>
-      <span class="item__content_col"> 23 </span>
-      <span class="item__content_col"> True </span>
+      <span class="item__content_col"> {{ user.dni }} </span>
+      <span class="item__content_col"> {{ formatDate(user.birthDate) }} </span>
+      <span class="item__content_col">
+        <font-awesome-icon class="icon" :class="user.state ? 'female' : 'male'" :icon="user.gender ? 'venus' : 'mars'" />
+      </span>
+      <span class="item__content_col"> {{ user.age }} </span>
+      <span class="item__content_col">
+        <font-awesome-icon class="icon" :class="user.state ? 'check' : 'noCheck'" :icon="user.state ? 'check' : 'xmark'" />
+      </span>
     </div>
     <div class="item__actions">
       <vue-btn>
@@ -29,6 +33,21 @@ export default {
   components: {
     vueBtn,
   },
+  props: {
+    user: {
+        type: Object,
+        default: () => {}
+    }
+  },
+  methods: {
+    formatDate(newDate) {
+      return new Date(newDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+    },
+  }
 }
 </script>
 <style scoped>
@@ -42,9 +61,21 @@ export default {
   padding: 10px 15px 10px 0px;
   border-radius: 5px;
 }
+.male {
+    color: #63d9f6;
+}
+.female {
+    color: #f663cc;
+}
+.check {
+    color: #eff663;
+}
+.noCheck {
+    color: #f66363;
+}
 .item__content {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) repeat(2, 30px);
+  grid-template-columns: repeat(2, 3fr) repeat(3, 1fr);
   justify-content: center;
 }
 .item__content_col {

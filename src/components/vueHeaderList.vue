@@ -34,12 +34,12 @@ export default {
   background-color: var(--bg-dark-grey);
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(3, 1fr) repeat(2, 30px) 70px;
+  grid-template-columns: repeat(2, 3fr) repeat(3, 1fr) 70px;
   box-sizing: border-box;
   padding: 10px 15px 10px 0px;
   border-radius: 5px;
   margin-bottom: 10px;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 .headerList__text {
   font-size: 12px;

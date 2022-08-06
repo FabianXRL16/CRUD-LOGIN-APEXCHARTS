@@ -1,6 +1,6 @@
 <template>
   <ul class="list">
-    <vue-item v-for="n in 10" :key="n" />
+    <vue-item v-for="user in $store.state.users" :key="user.dni" :user="user" />
   </ul>
 </template>
 <script>
