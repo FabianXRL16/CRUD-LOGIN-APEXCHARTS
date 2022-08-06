@@ -38,6 +38,9 @@ export default new Vuex.Store({
     updateType: ({ commit }, stateType) => {
       commit("UPDATE_TYPE", stateType)
     },
+    deleteUser: ({ commit }, dni) => {
+      commit("DELETE_USER", dni)
+    }
   },
   mutations: {
     USER_TO_SEARCH(state, dni) {
@@ -53,6 +56,10 @@ export default new Vuex.Store({
     },
     UPDATE_TYPE(state, type) {
       state.usersUpdateType = type
+    },
+    DELETE_USER(state, dni) {
+      let pos = state.users.findIndex(i => i.dni === dni)
+      state.users.splice(pos,1)
     }
   },
   modules: {

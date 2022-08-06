@@ -17,7 +17,7 @@
           <font-awesome-icon class="icon" icon="user-pen" />
         </template>
       </vue-btn>
-      <vue-btn>
+      <vue-btn @actionBtn="$store.dispatch('deleteUser', user.dni)">
         <template v-slot:icon>
           <font-awesome-icon class="icon" icon="xmark" />
         </template>
