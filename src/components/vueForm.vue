@@ -75,15 +75,11 @@ export default {
 
 <style scoped>
 .form {
-  width: 60vw;
-  min-width: 300px;
-  max-width: 400px;
-  height: 360px;
+  margin-top: 20px;
+  width: 100%;
+  height: 100%;
+  min-height: 450px;
   background-color: var(--bg-secondary);
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   box-sizing: border-box;
   padding: 20px;
   display: grid;
@@ -131,5 +127,18 @@ export default {
 }
 .form__actions button:nth-child(2) strong {
   color: var(--bg-purple);
+}
+@media screen and (min-width: 870px) {
+  .form {
+    width: 60vw;
+    min-width: 300px;
+    max-width: 400px;
+    height: 360px;
+    grid-template-rows: 1fr 80px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+      rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+      rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  }
 }
 </style>
