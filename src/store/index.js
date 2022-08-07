@@ -183,10 +183,12 @@ export default new Vuex.Store({
       localStorage.setItem("bdLocal", JSON.stringify(state.users));
     },
     ADD_ACCOUNT(state, account) {
+      state.accounts = JSON.parse(localStorage.getItem("accounts"))
       state.accounts.push(account)
+      localStorage.setItem("accounts", JSON.stringify(state.accounts));
     },
     FIND_USER(state, user) {
-      state.accountAccessAttempt = state.accounts.find(
+      state.accountAccessAttempt = JSON.parse(localStorage.getItem("accounts")).find(
         (acc) => acc.user === user
       )
     },
