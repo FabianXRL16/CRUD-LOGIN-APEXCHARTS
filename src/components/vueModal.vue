@@ -10,7 +10,7 @@
         </div>
         <div class="input__group">
           <label>Birth</label>
-          <vue-date-picker v-model="dateBirth" />
+          <vue-date-picker v-model="birthDate" />
         </div>
         <div class="input__group">
           <label>Age</label>
@@ -58,7 +58,7 @@ export default {
     return {
       options: ['Male', 'Female'],
       dni: null,
-      dateBirth: null,
+      birthDate: null,
       age: '',
       gender: true,
       state: true,
@@ -79,7 +79,7 @@ export default {
     newUser() {
       let data = {
         dni: this.dni,
-        dateBirth: this.dateBirth,
+        birthDate: new Date(this.birthDate),
         age: this.age,
         gender: this.gender,
         state: this.state,
@@ -89,7 +89,7 @@ export default {
     },
     editUser() {
       let data = {
-        dateBirth: this.dateBirth,
+        birthDate: new Date(this.birthDate),
         age: this.age,
         gender: this.gender,
         state: this.state,
@@ -104,13 +104,18 @@ export default {
       this.state = newValue === 'Active'
     },
     checkForm() {
-      if (this.dni && this.dateBirth && this.age) {
-        if(this.dni.trim().length === 8 && Number(this.age) >= 0 ) {
-          this.error = false
-          return true;
+      if (this.birthDate && Number(this.age) >= 0) {
+        if(this.$store.state.usersUpdateType) {
+          if(this.dni.trim().length === 8) {
+            this.error = false
+            return true;
+          } else {
+            this.error = true
+            return false
+          }
         } else {
-          this.error = true
-          return false
+          this.error = false
+          return true
         }
       } else {
         this.error = true
