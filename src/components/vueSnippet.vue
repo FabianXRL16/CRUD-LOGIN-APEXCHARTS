@@ -1,7 +1,7 @@
 <template>
   <section>
     <h2>
-      What's up, <strong>{{ name }}!</strong>
+      What's up, <strong>{{ nameUser}}!</strong>
     </h2>
     <router-link to="/statistics">
       <font-awesome-icon class="icon" icon="chart-pie" />
@@ -11,9 +11,9 @@
 <script>
 export default {
   name: 'vue-snippet',
-  data() {
-    return {
-      name: 'Fabian'
+  computed: {
+    nameUser() {
+      return localStorage.getItem('nameUser')
     }
   }
 }

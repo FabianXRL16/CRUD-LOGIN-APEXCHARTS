@@ -17,6 +17,8 @@ export default {
   methods: {
     signOff() {
       localStorage.removeItem('auth')
+      localStorage.removeItem('nameUser')
+      this.$store.dispatch('resetAccount')
       setTimeout(this.$router.push('/login'), 500)
     }
   }

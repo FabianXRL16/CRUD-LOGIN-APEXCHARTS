@@ -15,15 +15,10 @@
       </div>
     </div>
     <div class="form__actions">
-      <vue-btn
-        :text="typeLogin ? 'Create account' : 'Sign in'"
-        @actionBtn="actionLogin"
-      />
+      <vue-btn :text="typeLogin ? 'Create account' : 'Sign in'" @actionBtn="actionLogin" />
       <vue-btn @actionBtn="changeTypeLogin">
         <template v-slot:icon>
-          <span v-if="typeLogin"
-            >Already have an account? <strong>Sign in</strong></span
-          >
+          <span v-if="typeLogin">Already have an account? <strong>Sign in</strong></span>
           <span v-else>I do not have an account <strong>Sign up</strong></span>
         </template>
       </vue-btn>
@@ -72,7 +67,9 @@ export default {
         ).toString(this.CryptoJS.enc.Utf8)
         if (password === this.password.trim()) {
           this.error = false
-          localStorage.setItem('auth', 12345)
+          const JWT = this.JWTfake({ user: this.user, password: this.password })
+          localStorage.setItem('auth', JWT)
+          localStorage.setItem('nameUser', this.user)
           setTimeout(this.$router.push({ name: 'Home' }), 500)
         } else {
           this.error = true
@@ -85,7 +82,7 @@ export default {
     },
     signUp() {
       if (this.checkIfIUserExists()) {
-        if (this.user.trim().length >= 5 && this.password.trim().length >= 5) {
+        if (this.user.trim().length >= 5 && this.password.trim().length >= 5 && this.password.trim().length <= 20) {
           this.error = false
           let encryptedPassword = this.$CryptoJS.AES.encrypt(
             this.password.trim(),
@@ -97,7 +94,9 @@ export default {
             id: uuidv4(),
           }
           this.$store.dispatch('addNewAccount', account)
-          localStorage.setItem('auth', 12345)
+          const JWT = this.JWTfake({ user: this.user, password: this.password })
+          localStorage.setItem('auth', JWT)
+          localStorage.setItem('nameUser', this.user)
           setTimeout(this.$router.push({ name: 'Home' }), 500)
         } else {
           this.error = true
@@ -118,6 +117,10 @@ export default {
     checkIfIUserExists() {
       return !this.$store.state.accounts.some((i) => i.user === this.user)
     },
+    JWTfake(account) {
+      let data = account.user + account.password
+      return this.$CryptoJS.AES.encrypt(data, '12345')
+    },
   },
 }
 </script>
@@ -135,26 +138,31 @@ export default {
   grid-template-rows: 1fr 80px;
   gap: 20px;
 }
+
 .form__content {
   display: grid;
   grid-template-rows: 40px repeat(3, 30px);
   gap: 10px;
   height: 170px;
 }
+
 .form__content h2 {
   text-align: center;
 }
+
 .input__group {
   display: grid;
   grid-template-columns: 80px 1fr;
   align-items: center;
 }
+
 .form__actions {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
+
 .form__actions button:nth-child(1) {
   height: 40px;
   font-size: 16px;
@@ -170,18 +178,22 @@ export default {
   font-size: 12px;
   opacity: 1;
 }
+
 .form__actions button:nth-child(2) span {
   color: var(--bg-white);
   font-weight: 200;
 }
+
 .form__actions button:nth-child(2) strong {
   color: var(--bg-purple);
 }
+
 .msgAccount {
   color: #f66363;
   text-align: right;
   font-size: 12px;
 }
+
 @media screen and (min-width: 870px) {
   .form {
     margin-top: 0px;

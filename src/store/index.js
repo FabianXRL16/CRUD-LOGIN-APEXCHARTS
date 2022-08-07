@@ -146,6 +146,9 @@ export default new Vuex.Store({
     findUser: ({ commit }, user) => {
       commit('FIND_USER', user)
     },
+    resetAccount: ({ commit }) => {
+      commit('RESET_ACCOUNT')
+    }
   },
   mutations: {
     USER_TO_SEARCH(state, dni) {
@@ -184,7 +187,9 @@ export default new Vuex.Store({
         (acc) => acc.user === user
       )
     },
-    // SIGN_IN_ACCOUNT(state, account) {}
+    RESET_ACCOUNT(state) {
+      state.accountAccessAttempt = {}
+    }
   },
   modules: {},
 })
