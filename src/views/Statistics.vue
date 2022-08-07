@@ -1,6 +1,7 @@
 <template>
   <div class="statistics">
     <div class="header__stadistics">
+        <h2>Estatistics</h2>
       <router-link to="/">
         <font-awesome-icon class="icon" icon="house" />
       </router-link>
@@ -108,7 +109,7 @@ export default {
 }
 .header__stadistics {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .header__stadistics a {
   color: var(--bg-white);
