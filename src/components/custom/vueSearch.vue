@@ -14,7 +14,6 @@ export default {
   watch: {
     valueInput(dni) {
       this.$store.dispatch("userToSearch", dni);
-      // console.log(dni)
     },
   },
 }

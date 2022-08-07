@@ -55,66 +55,63 @@ export default {
   },
   methods: {
     actionLogin() {
-      this.typeLogin ? this.signUp() : this.signIn()
+      if (this.user.trim() && this.password.trim()) {
+        this.typeLogin ? this.signUp() : this.signIn()
+      } else {
+        this.error = true
+        this.msgError = 'Incomplete fields required'
+      }
     },
     signIn() {
-      this.$store.dispatch('findUser', this.user)
+      this.$store.dispatch('findUser', this.user.trim())
       const currentAccount = this.$store.state.accountAccessAttempt
       if (currentAccount) {
-        this.error = false
-        this.msgError = 'Unregistered user'
         const password = this.$CryptoJS.AES.decrypt(
           currentAccount.password,
           '12345'
         ).toString(this.CryptoJS.enc.Utf8)
-        if (password === this.password) {
+        if (password === this.password.trim()) {
           this.error = false
-          this.msgError = 'Incorrect password'
           setTimeout(this.$router.push({ name: 'Home' }), 500)
         } else {
           this.error = true
+          this.msgError = 'Incorrect password'
         }
       } else {
         this.error = true
+        this.msgError = 'User not found'
       }
     },
     signUp() {
-      if (this.user && this.password) {
+      if (this.checkIfIUserExists()) {
         if (this.user.length >= 5 && this.password.length >= 5) {
-          console.log(this.checkIfIUserExists())
-          if (this.checkIfIUserExists()) {
-            this.error = false
-            let encryptedPassword = this.$CryptoJS.AES.encrypt(
-              this.password.trim(),
-              '12345'
-            ).toString()
-            let account = {
-              user: this.user.trim(),
-              password: encryptedPassword,
-              id: uuidv4(),
-            }
-            this.$store.dispatch('addNewAccount', account)
-            setTimeout(this.$router.push({ name: 'Home' }), 500)
-          } else {
-            console.log("hola")
-            this.error = true
-            this.msgError = 'User already exists'
+          this.error = false
+          let encryptedPassword = this.$CryptoJS.AES.encrypt(
+            this.password.trim(),
+            '12345'
+          ).toString()
+          let account = {
+            user: this.user.trim(),
+            password: encryptedPassword,
+            id: uuidv4(),
           }
+          this.$store.dispatch('addNewAccount', account)
+          setTimeout(this.$router.push({ name: 'Home' }), 500)
         } else {
           this.error = true
           this.msgError = 'Incomplete fields required, minimum 5 characters'
-        }        
+        }
       } else {
         this.error = true
-        this.msgError = "Incomplete fields required"
+        this.msgError = 'User already exists'
       }
     },
     changeTypeLogin() {
       this.typeLogin = !this.typeLogin
       this.user = null
       this.password = null
-      this.msgNoUser = false
-      this.msgCreateAccount = false
+      this.error = false
+      this.msgError = null
     },
     checkIfIUserExists() {
       return !this.$store.state.accounts.some((i) => i.user === this.user)
