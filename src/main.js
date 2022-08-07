@@ -5,6 +5,11 @@ import store from './store'
 
 import VueCryptojs from 'vue-cryptojs'
 
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
