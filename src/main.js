@@ -27,7 +27,8 @@ import {
   faEye,
   faEyeSlash,
   faChartPie,
-  faHouse
+  faHouse,
+  faRightFromBracket
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -47,7 +48,8 @@ library.add(
   faEye,
   faEyeSlash,
   faChartPie,
-  faHouse
+  faHouse,
+  faRightFromBracket
 )
 
 Vue.config.productionTip = false

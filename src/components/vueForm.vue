@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     actionLogin() {
-      if (this.user.trim() && this.password.trim()) {
+      if (this.user && this.password) {
         this.typeLogin ? this.signUp() : this.signIn()
       } else {
         this.error = true
@@ -67,11 +67,12 @@ export default {
       const currentAccount = this.$store.state.accountAccessAttempt
       if (currentAccount) {
         const password = this.$CryptoJS.AES.decrypt(
-          currentAccount.password,
+          currentAccount.password.trim(),
           '12345'
         ).toString(this.CryptoJS.enc.Utf8)
         if (password === this.password.trim()) {
           this.error = false
+          localStorage.setItem('auth', 12345)
           setTimeout(this.$router.push({ name: 'Home' }), 500)
         } else {
           this.error = true
@@ -84,7 +85,7 @@ export default {
     },
     signUp() {
       if (this.checkIfIUserExists()) {
-        if (this.user.length >= 5 && this.password.length >= 5) {
+        if (this.user.trim().length >= 5 && this.password.trim().length >= 5) {
           this.error = false
           let encryptedPassword = this.$CryptoJS.AES.encrypt(
             this.password.trim(),
@@ -96,6 +97,7 @@ export default {
             id: uuidv4(),
           }
           this.$store.dispatch('addNewAccount', account)
+          localStorage.setItem('auth', 12345)
           setTimeout(this.$router.push({ name: 'Home' }), 500)
         } else {
           this.error = true

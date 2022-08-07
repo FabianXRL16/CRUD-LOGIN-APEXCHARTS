@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <vue-sign-off />
     <vue-header />
     <vue-snippet />
     <vue-header-list />
@@ -15,21 +16,25 @@
 
 <script>
 import vueList from '@/components/vueList.vue'
+import vueSignOff from '@/components/vueSignOff.vue'
 import vueHeaderList from '@/components/vueHeaderList.vue'
 import vueHeader from '@/components/vueHeader.vue'
 import vueSnippet from '@/components/vueSnippet.vue'
 import vueModal from '@/components/vueModal.vue'
 import vueBtn from '@/components/custom/vueBtn.vue'
+import VueSignOff from './vueSignOff.vue'
 export default {
   name: 'vue-todo',
   components: {
     vueList,
+    vueSignOff,
     vueHeaderList,
     vueHeader,
     vueSnippet,
     vueBtn,
     vueModal,
-  },
+    VueSignOff
+},
   data() {
     return {
       users: [],
@@ -54,9 +59,9 @@ export default {
 .container {
   width: 80vw;
   height: 80vh;
-  min-height: 550px;
+  min-height: 540px;
   display: grid;
-  grid-template-rows: 25px 100px 50px 1fr;
+  grid-template-rows: 40px 25px 100px 50px 1fr;
 }
 .btnAddItem {
   position: absolute;

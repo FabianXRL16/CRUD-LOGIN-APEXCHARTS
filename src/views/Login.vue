@@ -8,6 +8,9 @@ export default {
   name: 'Home',
   components: {
     vueForm
+  },
+  mounted() {
+    if(localStorage.getItem('auth')) this.$router.push('/')
   }
 }
 </script>
