@@ -59,5 +59,8 @@ Vue.use(VueCryptojs)
 new Vue({
   router,
   store,
+  beforeCreate() {
+    this.$store.commit("INITIALISE_STORE");
+  },
   render: (h) => h(App),
 }).$mount('#app')

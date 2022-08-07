@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    users: [
+    users: JSON.parse(localStorage.getItem("bdLocal")) || [
       {
         dni: '73860228',
         birthDate: new Date('12/12/2000'),
@@ -160,6 +160,7 @@ export default new Vuex.Store({
     ADD_USER(state, data) {
       if (!state.users.some((i) => i.dni === data.dni)) {
         state.users.unshift(data)
+        localStorage.setItem("bdLocal", JSON.stringify(state.users))
       }
     },
     UPDATE_TYPE(state, type) {
@@ -168,6 +169,7 @@ export default new Vuex.Store({
     DELETE_USER(state, dni) {
       let pos = state.users.findIndex((i) => i.dni === dni)
       state.users.splice(pos, 1)
+      localStorage.setItem("bdLocal", JSON.stringify(state.users));
     },
     GET_DNI_USER(state, dni) {
       state.currentUserDni = dni
@@ -178,6 +180,7 @@ export default new Vuex.Store({
         dni: state.users[pos].dni,
       }
       state.users.splice(pos, 1, Object.assign(data, dni))
+      localStorage.setItem("bdLocal", JSON.stringify(state.users));
     },
     ADD_ACCOUNT(state, account) {
       state.accounts.push(account)
@@ -189,7 +192,14 @@ export default new Vuex.Store({
     },
     RESET_ACCOUNT(state) {
       state.accountAccessAttempt = {}
-    }
+    },
+    INITIALISE_STORE(state) {
+      if (localStorage.getItem("bdLocal")) {
+        this.replaceState(
+          Object.assign(state, JSON.parse(localStorage.getItem("bdLocal")))
+        );
+      }
+    },
   },
   modules: {},
 })
