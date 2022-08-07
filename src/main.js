@@ -20,7 +20,9 @@ import {
   faCheck,
   faPlus,
   faEye,
-  faEyeSlash
+  faEyeSlash,
+  faChartPie,
+  faHouse
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -38,7 +40,9 @@ library.add(
   faCheck,
   faPlus,
   faEye,
-  faEyeSlash
+  faEyeSlash,
+  faChartPie,
+  faHouse
 )
 
 Vue.config.productionTip = false
