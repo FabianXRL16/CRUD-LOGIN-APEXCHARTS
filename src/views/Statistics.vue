@@ -10,20 +10,20 @@
         <h2>Chart by Gender</h2>
         <apexchart
           class="chart"
-          :width="isMobile ? '90%' : '500'"
-          type="bar"
-          :options="options"
-          :series="series"
+          type="donut"
+          :width="isMobile ? '90%' : '400'"
+          :options="gender.options"
+          :series="gender.series"
         ></apexchart>
       </div>
       <div class="gender__stadistics">
-        <h2>Chart by Gender</h2>
+        <h2>Chart by Date of Birth</h2>
         <apexchart
           class="chart"
-          :width="isMobile ? '90%' : '500'"
           type="bar"
-          :options="options"
-          :series="series"
+          :width="isMobile ? '90%' : '400'"
+          :options="dateBirths.options"
+          :series="dateBirths.series"
         ></apexchart>
       </div>
     </div>
@@ -38,21 +38,56 @@ export default {
     return {
       isMobile: true,
       chart: true,
-      options: {
-        chart: {
-          id: 'vuechart-example',
-        },
-        xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
-        },
-      },
-      series: [
-        {
-          name: 'series-1',
-          data: [30, 40, 45, 50, 49, 60, 70, 91],
-        },
-      ],
     }
+  },
+  computed: {
+    gender() {
+      const users = this.$store.state.users
+      let series = users.reduce(
+        function (newObject, user) {
+          if (user.gender) {
+            newObject.Male.push(user)
+          } else {
+            newObject.Female.push(user)
+          }
+          return newObject
+        },
+        { Male: [], Female: [] }
+      )
+      return {
+        options: {
+          labels: ['Male', 'Female'],
+        },
+        series: [series.Male.length, series.Female.length],
+      }
+    },
+    dateBirths() {
+      const users = this.$store.state.users
+      let filterDate = users.reduce(function (r, a) {
+        r[a.birthDate.getFullYear()] = r[a.birthDate.getFullYear()] || []
+        r[a.birthDate.getFullYear()].push(a)
+        return r
+      }, Object.create(null))
+
+      let arr = []
+
+      Object.values(filterDate).map((i) => arr.push(i.length))
+
+      return {
+        options: {
+          plotOptions: {
+            bar: {
+              borderRadius: 4,
+              horizontal: true,
+            },
+          },
+          xaxis: {
+            categories: Object.keys(filterDate),
+          },
+        },
+        series: [{ data: arr }],
+      }
+    },
   },
   mounted() {
     this.isMobile = screen.width <= 870
@@ -66,7 +101,6 @@ export default {
   height: 80vh;
   display: grid;
   grid-template-rows: 25px 1fr;
-  gap: 40px;
 }
 .container__charts {
   display: grid;
@@ -83,19 +117,29 @@ export default {
   text-align: center;
   font-size: 14px;
 }
+:deep(.apexcharts-legend-text) {
+  color: var(--bg-white) !important;
+}
+:deep(.apexcharts-xaxis-label),
+:deep(.apexcharts-yaxis-label) {
+  fill: var(--bg-white) !important;
+}
 .gender__stadistics {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 }
 @media screen and (min-width: 870px) {
   .statistics {
     width: 550px;
     height: 550px;
     min-height: 410px;
+    gap: 40px;
   }
   .container__charts {
+    gap: 50px;
     overflow-y: scroll;
   }
   .container__charts::-webkit-scrollbar {
