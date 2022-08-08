@@ -109,13 +109,14 @@ export default new Vuex.Store({
     showModal: false,
     usersUpdateType: true, // true is add and false is edit
     currentUserDni: null,
-    accounts: [
-      {
-        user: 'fxrl16',
-        password: 'U2FsdGVkX19mzkaMlkBRIpQuv6gFAsTIyZTkxirk/d8=',
-        id: '6047dcef-8398-4f1f-8ff1-6050c9d0b822',
-      },
-    ],
+    accounts: [],
+    // accounts: [
+    //   {
+    //     user: 'fxrl16',
+    //     password: 'U2FsdGVkX19mzkaMlkBRIpQuv6gFAsTIyZTkxirk/d8=',
+    //     id: '6047dcef-8398-4f1f-8ff1-6050c9d0b822',
+    //   },
+    // ],
     accountAccessAttempt: {},
   },
   actions: {
@@ -183,14 +184,22 @@ export default new Vuex.Store({
       localStorage.setItem("bdLocal", JSON.stringify(state.users));
     },
     ADD_ACCOUNT(state, account) {
-      state.accounts = JSON.parse(localStorage.getItem("accounts"))
+      if(JSON.parse(localStorage.getItem("accounts"))){
+        state.accounts = JSON.parse(localStorage.getItem("accounts"))
+      }
       state.accounts.push(account)
       localStorage.setItem("accounts", JSON.stringify(state.accounts));
     },
     FIND_USER(state, user) {
-      state.accountAccessAttempt = JSON.parse(localStorage.getItem("accounts")).find(
-        (acc) => acc.user === user
-      )
+      if(JSON.parse(localStorage.getItem("accounts"))) {
+        state.accountAccessAttempt = JSON.parse(localStorage.getItem("accounts")).find(
+          (acc) => acc.user === user
+        )
+      } else {
+        state.accountAccessAttempt = state.users.find(
+          (acc) => acc.user === user
+        )
+      }
     },
     RESET_ACCOUNT(state) {
       state.accountAccessAttempt = {}

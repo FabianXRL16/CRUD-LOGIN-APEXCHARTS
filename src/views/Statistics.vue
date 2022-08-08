@@ -65,8 +65,8 @@ export default {
     dateBirths() {
       const users = this.$store.state.users
       let filterDate = users.reduce(function (r, a) {
-        r[a.birthDate.substring(0, 4)] = r[a.birthDate.substring(0, 4)] || []
-        r[a.birthDate.substring(0, 4)].push(a)
+        r[a.birthDate.getFullYear()] = r[a.birthDate.getFullYear()] || []
+        r[a.birthDate.getFullYear()].push(a)
         return r
       }, Object.create(null))
 

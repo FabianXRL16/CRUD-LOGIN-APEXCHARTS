@@ -115,7 +115,12 @@ export default {
       this.msgError = null
     },
     checkIfIUserExists() {
-      return !JSON.parse(localStorage.getItem("accounts")) .some((i) => i.user === this.user)
+      // return !JSON.parse(localStorage.getItem("accounts")).some((i) => i.user === this.user)
+      if(localStorage.getItem("accounts")){
+        return !JSON.parse(localStorage.getItem("accounts")).some((i) => i.user === this.user)
+      } else {
+        return !this.$store.state.users.some((i) => i.user === this.user)
+      }
     },
     JWTfake(account) {
       let data = account.user + account.password
