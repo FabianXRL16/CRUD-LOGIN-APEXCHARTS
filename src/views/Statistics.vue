@@ -91,7 +91,6 @@ export default {
     },
   },
   mounted() {
-    if(!localStorage.getItem('auth')) this.$router.push('/login')
     this.isMobile = screen.width <= 870
   }
 }
