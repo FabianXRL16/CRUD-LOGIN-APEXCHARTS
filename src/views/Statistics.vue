@@ -1,7 +1,7 @@
 <template>
   <div class="statistics">
     <div class="header__stadistics">
-        <h2>Estatistics</h2>
+      <h2>Estatistics</h2>
       <router-link to="/">
         <font-awesome-icon class="icon" icon="house" />
       </router-link>
@@ -65,8 +65,8 @@ export default {
     dateBirths() {
       const users = this.$store.state.users
       let filterDate = users.reduce(function (r, a) {
-        r[a.birthDate.getFullYear()] = r[a.birthDate.getFullYear()] || []
-        r[a.birthDate.getFullYear()].push(a)
+        r[a.birthDate.substring(0, 4)] = r[a.birthDate.substring(0, 4)] || []
+        r[a.birthDate.substring(0, 4)].push(a)
         return r
       }, Object.create(null))
 
@@ -92,7 +92,7 @@ export default {
   },
   mounted() {
     this.isMobile = screen.width <= 870
-  }
+  },
 }
 </script>
 
