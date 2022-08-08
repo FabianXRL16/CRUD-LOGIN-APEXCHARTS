@@ -63,30 +63,58 @@ export default {
       }
     },
     dateBirths() {
-      const users = this.$store.state.users
-      let filterDate = users.reduce(function (r, a) {
-        r[a.birthDate.getFullYear()] = r[a.birthDate.getFullYear()] || []
-        r[a.birthDate.getFullYear()].push(a)
-        return r
-      }, Object.create(null))
-
-      let arr = []
-
-      Object.values(filterDate).map((i) => arr.push(i.length))
-
-      return {
-        options: {
-          plotOptions: {
-            bar: {
-              borderRadius: 4,
-              horizontal: true,
+      if(localStorage.getItem('bdLocal')){
+        const users = JSON.parse(localStorage.getItem('bdLocal'))
+        let filterDate = users.reduce(function (r, a) {
+          r[a.birthDate.substring(0,4)] = r[a.birthDate.substring(0,4)] || []
+          r[a.birthDate.substring(0,4)].push(a)
+          return r
+        }, Object.create(null))
+  
+        let arr = []
+  
+        Object.values(filterDate).map((i) => arr.push(i.length))
+  
+        return {
+          options: {
+            plotOptions: {
+              bar: {
+                borderRadius: 4,
+                horizontal: true,
+              },
+            },
+            xaxis: {
+              categories: Object.keys(filterDate),
             },
           },
-          xaxis: {
-            categories: Object.keys(filterDate),
+          series: [{ data: arr }],
+        }
+      } else {
+        const users = this.$store.state.users
+        let filterDate = users.reduce(function (r, a) {
+          r[a.birthDate.getFullYear()] = r[a.birthDate.getFullYear()] || []
+          r[a.birthDate.getFullYear()].push(a)
+          return r
+        }, Object.create(null))
+  
+        let arr = []
+  
+        Object.values(filterDate).map((i) => arr.push(i.length))
+  
+        return {
+          options: {
+            plotOptions: {
+              bar: {
+                borderRadius: 4,
+                horizontal: true,
+              },
+            },
+            xaxis: {
+              categories: Object.keys(filterDate),
+            },
           },
-        },
-        series: [{ data: arr }],
+          series: [{ data: arr }],
+        }
       }
     },
   },
